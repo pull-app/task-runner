@@ -1,0 +1,36 @@
+name: App Stats
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: "0 4 * * *"
+
+jobs:
+  app-stats:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch stats
+        uses: pull-app/app-stats-action@latest
+        id: stats
+        with:
+          id: ${{ secrets.PULL_APP_ID }}
+          private_key: ${{ secrets.PULL_APP_PRIVATE_KEY }}
+      - name: Checkou pull-app/stats
+        uses: actions/checkout@v2
+        with:
+          repository: pull-app/stats
+          ssh-key: ${{ secrets.STATS_DEPLOY_KEY }}
+          ref: master
+      - name: Commit and push
+        run: |
+          echo '{"subject":"installed","status":"${{ steps.stats.outputs.installations }} times","color":"blue"}' > badges/installed.json
+          echo '{"subject":"","status":"${{ steps.stats.outputs.installations }}","color":"blue"}' > badges/installed.plain.json
+          echo '{"subject":"managing","status":"${{ steps.stats.outputs.repositories }} repos","color":"blue"}' > badges/managing.json
+          echo '{"subject":"","status":"${{ steps.stats.outputs.repositories }}","color":"blue"}' > badges/managing.plain.json
+          echo '${{ steps.stats.outputs.stats }}' > stats.json
+          git config user.name github-actions
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add .
+          git commit -m "Updated: $(date -u +"%D %T %Z")" --allow-empty
+          git push origin HEAD:master
