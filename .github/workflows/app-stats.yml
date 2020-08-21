@@ -1,14 +1,13 @@
 name: App Stats
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch: {}
   schedule:
-    - cron: "0 4 * * *"
+    - cron: "0 */3 * * *"
 
 jobs:
   app-stats:
     runs-on: ubuntu-latest
+    timeout-minutes: 180
     steps:
       - name: Fetch stats
         uses: pull-app/app-stats-action@latest
