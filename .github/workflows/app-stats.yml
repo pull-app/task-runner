@@ -24,9 +24,9 @@ jobs:
       - name: Commit and push
         run: |
           echo '{"subject":"installed","status":"${{ steps.stats.outputs.installations }} times","color":"blue"}' > badges/installed.json
-          echo '{"subject":"","status":"${{ steps.stats.outputs.installations }}","color":"blue"}' > badges/installed.plain.json
+          echo '{"subject":"","status":"${{ steps.stats.outputs.installations }}","color":"black"}' > badges/installed.plain.json
           echo '{"subject":"managing","status":"${{ steps.stats.outputs.repositories }} repos","color":"blue"}' > badges/managing.json
-          echo '{"subject":"","status":"${{ steps.stats.outputs.repositories }}","color":"blue"}' > badges/managing.plain.json
+          echo '{"subject":"","status":"${{ steps.stats.outputs.repositories }}","color":"black"}' > badges/managing.plain.json
           echo '${{ steps.stats.outputs.stats }}' > stats.json
           git config user.name github-actions
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
