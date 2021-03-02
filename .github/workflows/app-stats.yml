@@ -2,12 +2,12 @@ name: App Stats
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: "0 */3 * * *"
+    - cron: "0 */6 * * *"
 
 jobs:
   app-stats:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 360
     steps:
       - name: Fetch stats
         uses: pull-app/app-stats-action@latest
